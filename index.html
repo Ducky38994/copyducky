@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BP Currency System - Cool Vibes</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        :root {
+            --bg-dark: #0f111a;
+            --bg-darker: #080a12;
+            --primary-gradient: linear-gradient(135deg, #7f53ac 0%, #647dee 100%);
+            --secondary-gradient: linear-gradient(135deg, #f81ce5 0%, #6a11cb 100%);
+            --accent-color: #ee82ee;
+            --text-light: #e0e0ff;
+            --text-muted: #a0a0c0;
+            --btn-bg: #1e213a;
+            --btn-hover-bg: #644de2;
+            --shadow-glow: rgba(111, 111, 236, 0.5);
+            --border-radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+            user-select: none;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px var(--shadow-glow);
+            letter-spacing: 2px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .nav button {
+            background: var(--btn-bg);
+            border: none;
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 12px 25px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav button:hover,
+        .nav button:focus {
+            background: var(--btn-hover-bg);
+            box-shadow: 0 0 15px var(--shadow-glow);
+            transform: translateY(-2px);
+        }
+
+        .nav button.active {
+            background: var(--secondary-gradient);
+            box-shadow: 0 0 20px var(--shadow-glow);
+            transform: scale(1.05);
+            color: #fff;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 740px;
+            background: var(--bg-darker);
+            border-radius: var(--border-radius);
+            padding: 25px 30px;
+            box-shadow: 0 0 30px rgba(99, 71, 123, 0.7);
+            backdrop-filter: blur(12px);
+        }
+
+        .tab {
+            display: none;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .tab.active {
+            display: block;
+        }
+
+        .section {
+            background: linear-gradient(145deg, #151724, #1c2050);
+            padding: 20px 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 0 25px rgba(111, 111, 236, 0.3);
+            border: 1px solid rgba(99, 71, 123, 0.6);
+            margin-bottom: 30px;
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            background: var(--primary-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .pixel {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+            color: var(--text-light);
+        }
+
+        .log {
+            max-height: 180px;
+            overflow-y: auto;
+            background: rgba(50, 50, 80, 0.75);
+            border-radius: 10px;
+            padding: 10px 15px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: #d7caff;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 14px;
+            margin-top: 6px;
+            font-size: 1rem;
+            border-radius: var(--border-radius);
+            border: 1.8px solid #7f53ac;
+            background: #1c1e44;
+            color: #d7caff;
+        }
+
+        button {
+            background: var(--secondary-gradient);
+            border: none;
+            border-radius: var(--border-radius);
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 12px 28px;
+            cursor: pointer;
+            margin-top: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        button:hover {
+            background: var(--primary-gradient);
+            box-shadow: 0 0 25px rgba(167, 100, 255, 0.9);
+            transform: translateY(-3px);
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            font-weight: 500;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(7px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title">BP CURRENCY SYSTEM</div>
+
+    <nav class="nav">
+        <button class="active" onclick="switchTab('home')">🏠 Home</button>
+        <button onclick="switchTab('trade')">📈 Trading</button>
+        <button onclick="switchTab('transfer')">🔁 Transfer</button>
+        <button onclick="switchTab('income')">📊 Income</button>
+        <button onclick="switchTab('expenses')">📉 Expenses</button>
+    </nav>
+
+    <main class="container">
+        <section class="tab active" id="home">
+            <div class="section">
+                <div class="subtitle">💰 Balance & Server Fee</div>
+                <div class="pixel">Balance: <span id="balance">3000</span> BP</div>
+                <button onclick="payServerFee()">Pay Server Fee</button>
+                <div class="pixel">Next Fee Due: <span id="nextFee"></span></div>
+            </div>
+        </section>
+
+        <section class="tab" id="trade">
+            <div class="section">
+                <div class="subtitle">📈 Trading Section</div>
+
+                <div class="pixel">Wheat Price: <span id="wheatPrice"></span> BP/kg</div>
+                <label for="wheatBpInput">BP to spend on Wheat:</label>
+                <input id="wheatBpInput" type="number" min="1" placeholder="BP amount for wheat" />
+                <button onclick="buy('wheat')">Buy Wheat</button>
+
+                <div class="pixel" style="margin-top: 25px;">Wool Price: <span id="woolPrice"></span> BP/kg</div>
+                <label for="woolBpInput">BP to spend on Wool:</label>
+                <input id="woolBpInput" type="number" min="1" placeholder="BP amount for wool" />
+                <button onclick="buy('wool')">Buy Wool</button>
+            </div>
+        </section>
+
+        <section class="tab" id="transfer">
+            <div class="section">
+                <div class="subtitle">🔁 Transfer BP</div>
+                <input type="number" id="sendAmount" placeholder="Amount to send" />
+                <button onclick="generateCode()">Generate Code</button>
+                <div class="pixel">Transfer Code: <span id="transferCode"></span></div>
+                <input type="text" id="redeemCode" placeholder="Paste code" />
+                <button onclick="redeemCode()">Redeem</button>
+            </div>
+        </section>
+
+        <section class="tab" id="income">
+            <div class="section">
+                <div class="subtitle">📊 Income</div>
+                <div class="log" id="incomeLog"></div>
+            </div>
+        </section>
+
+        <section class="tab" id="expenses">
+            <div class="section">
+                <div class="subtitle">📉 Expenses</div>
+                <div class="log" id="expenseLog"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function switchTab(id) {
+            document.querySelectorAll('.nav button').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('onclick').includes(id));
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.toggle('active', tab.id === id);
+            });
+        }
+
+        let balance = 3000;
+        let feeAmount = 50;
+        let codes = JSON.parse(localStorage.getItem('bp_codes') || '{}');
+        let serverFeeDue = new Date(localStorage.getItem('bp_due') || new Date().toISOString());
+        let missedPayments = 0;
+
+        let wheatPrice = randomPrice(140, 180);
+        let woolPrice = randomPrice(50, 90);
+
+        function saveState() {
+            localStorage.setItem('bp_codes', JSON.stringify(codes));
+            localStorage.setItem('bp_due', serverFeeDue.toISOString());
+        }
+
+        function updateBalanceDisplay() {
+            document.getElementById('balance').textContent = balance.toFixed(0);
+            saveState();
+        }
+
+        function updateNextFeeDisplay() {
+            document.getElementById('nextFee').textContent = serverFeeDue.toDateString();
+        }
+
+        function fluctuateBalance() {
+            const fluctuation = Math.floor(Math.random() * 201) - 100;
+            balance += fluctuation;
+            updateBalanceDisplay();
+        }
+
+        function fluctuatePrices() {
+            wheatPrice = randomPrice(140, 180);
+            woolPrice = randomPrice(50, 90);
+            refreshPrices();
+        }
+
+        function payServerFee() {
+            logExpense(`Server Fee Paid: ${feeAmount} BP`);
+            missedPayments = 0;
+            feeAmount = 50;
+            serverFeeDue.setMonth(serverFeeDue.getMonth() + 1);
+            updateBalanceDisplay();
+            updateNextFeeDisplay();
+            alert('Server fee paid.');
+        }
+
+        function generateCode() {
+            const amount = parseFloat(document.getElementById('sendAmount').value);
+            if (isNaN(amount) || amount <= 0) return alert('Invalid amount');
+            const code = Math.random().toString(36).substring(2, 8);
+            codes[code] = amount;
+            logExpense(`Transfer Sent: ${amount} BP (Code: ${code})`);
+            updateBalanceDisplay();
+            document.getElementById('transferCode').textContent = code;
+            saveState();
+        }
+
+        function redeemCode() {
+            const code = document.getElementById('redeemCode').value.trim();
+            if (codes[code]) {
+                const amount = codes[code];
+                balance += amount;
+                logIncome(`Redeemed Code: +${amount} BP (Code: ${code})`);
+                delete codes[code];
+                updateBalanceDisplay();
+                document.getElementById('redeemCode').value = '';
+                saveState();
+                alert(`Successfully redeemed ${amount} BP!`);
+            } else {
+                alert('Invalid or expired code.');
+            }
+        }
+
+        function buy(item) {
+            const inputId = item === 'wheat' ? 'wheatBpInput' : 'woolBpInput';
+            const bpAmount = parseFloat(document.getElementById(inputId).value);
+            const pricePerKg = item === 'wheat' ? wheatPrice : woolPrice;
+
+            if (isNaN(bpAmount) || bpAmount <= 0) return alert('Enter a valid BP amount.');
+            const quantityKg = Math.floor((bpAmount / pricePerKg) * 100) / 100;
+            const cost = quantityKg * pricePerKg;
+
+            logExpense(`Bought ${quantityKg.toFixed(2)} kg ${item} for ${cost.toFixed(2)} BP`);
+            updateBalanceDisplay();
+            alert(`Successfully bought ${quantityKg.toFixed(2)} kg of ${item}`);
+            document.getElementById(inputId).value = '';
+        }
+
+        function refreshPrices() {
+            document.getElementById('wheatPrice').textContent = wheatPrice + ' BP';
+            document.getElementById('woolPrice').textContent = woolPrice + ' BP';
+        }
+
+        function randomPrice(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function logExpense(message) {
+            const log = document.getElementById('expenseLog');
+            const time = new Date().toLocaleTimeString();
+            log.innerHTML = `[${time}] ${message}<br>` + log.innerHTML;
+        }
+
+        function logIncome(message) {
+            const log = document.getElementById('incomeLog');
+            const time = new Date().toLocaleTimeString();
+            log.innerHTML = `[${time}] ${message}<br>` + log.innerHTML;
+        }
+
+        // Initialize
+        updateBalanceDisplay();
+        updateNextFeeDisplay();
+        refreshPrices();
+
+        // Fluctuate balance and prices every 5 seconds
+        setInterval(fluctuateBalance, 5000);
+        setInterval(fluctuatePrices, 5000);
+    </script>
+</body>
+
+</html>
